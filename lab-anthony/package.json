@@ -1,0 +1,30 @@
+{
+  "name": "lab-anthony",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest -i --coverage",
+    "dbon": "mkdir -p ./db && mongod --dbpath ./db",
+    "dboff": "killall mongod"
+  },
+  "author": "Anthony Robinson",
+  "license": "ISC",
+  "devDependencies": {
+    "debug": "^3.1.0",
+    "eslint": "^4.13.1",
+    "faker": "^4.1.0",
+    "jest": "^21.2.1",
+    "superagent": "^3.8.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "mongoose": "^4.13.7",
+    "winston": "^2.4.0"
+  }
+}
