@@ -5,27 +5,25 @@ process.env.MONGODB_URI = 'mongodb://localhost/testing';
 
 const faker = require('faker');
 const superagent = require('superagent');
-const Brewery = require('../model/brewery');
+const Beer = require('../model/beer');
 const server = require('../lib/server');
 
-const apiURL = `http://localhost:${process.env.PORT}/api/brewerys`;
+const apiURL = `http://localhost:${process.env.PORT}/api/beers`;
 
-const breweryMockCreate = () => {
-  return new Brewery({
-    brewery : faker.lorem.words(10),
-    location : faker.lorem.words(100),
-    founded : faker.lorem.words(20),
+const beerMockCreate = () => {
+  return new Beer({
+    name : faker.lorem.words(10),
+    style : faker.lorem.words(100),
+    abv : faker.lorem.words(20),
   }).save();
 };
 
-
-describe('/api/brewerys', () => {
+describe('/api/breweries', () => {
   beforeAll(server.start);
   afterAll(server.stop);
-  afterEach(() => Brewery.remove({}));
+  afterEach(() => Beer.remove({}));
 
-  describe('POST /api/brewerys', () => {
-
+  describe('POST /api/breweries', () => {
     test('should respond with a brewery and 200 status code if there is no error', () => {
       let breweryToPost = {
         brewery : faker.lorem.words(10),
@@ -56,11 +54,11 @@ describe('/api/brewerys', () => {
 
   });
 
-  describe('GET /api/brewerys', () => {
+  describe('GET /api/breweries', () => {
 
     test('should respond with 200 status code if there is no error', () => {
       let breweryToTest = null;
-      return breweryMockCreate()
+      return beerMockCreate()
         .then(brewery => {
           breweryToTest = brewery;
           return superagent.get(`${apiURL}/${brewery._id}`);
@@ -83,10 +81,10 @@ describe('/api/brewerys', () => {
     });
   });
 
-  describe('DELETE /api/brewerys/:id', () => {
+  describe('DELETE /api/breweries/:id', () => {
 
     test('should respond with 204 status code if the brewery was deleted', () => {
-      return breweryMockCreate()
+      return beerMockCreate()
         .then(brewery => {
           return superagent.delete(`${apiURL}/${brewery._id}`);
         })
@@ -96,7 +94,7 @@ describe('/api/brewerys', () => {
     });
 
     test('should respond with 404 status code no brewery was entered', () => {
-      return breweryMockCreate()
+      return beerMockCreate()
         .then(() => {
           return superagent.delete(`${apiURL}/`);
         })
@@ -106,11 +104,11 @@ describe('/api/brewerys', () => {
     });
   });
 
-  describe('PUT /api/brewerys', () => {
+  describe('PUT /api/breweries', () => {
 
     test('should update brewery and respond with 200 if there are no errors', () => {
       let breweryToUpdate = null;
-      return breweryMockCreate()
+      return beerMockCreate()
         .then(brewery => {
           breweryToUpdate = brewery;
           return superagent.put(`${apiURL}/${brewery._id}`)
@@ -125,7 +123,7 @@ describe('/api/brewerys', () => {
     });
 
     test('should respond with a 400 if validation fails', () => {
-      return breweryMockCreate()
+      return beerMockCreate()
         .then(brewery => {
           return superagent.put(`${apiURL}/${brewery._id}`)
             .send({brewery : ''});
@@ -136,7 +134,7 @@ describe('/api/brewerys', () => {
     });
 
     test('should return a 404 if a brewery is not found', () => {
-      return breweryMockCreate()
+      return beerMockCreate()
         .then(() => {
           return superagent.put(`${apiURL}/12345`)
             .send({brewery : 'Holy Mountain'});
@@ -154,7 +152,7 @@ describe('/api/brewerys', () => {
       };
       return superagent.post(`${apiURL}`).send(breweryToCheck)
         .then(() => {
-          return breweryMockCreate()
+          return beerMockCreate()
             .then((brewery) => {
               return superagent.put(`${apiURL}/${brewery._id}`)
                 .send({brewery : 'Holy Mountain'});
