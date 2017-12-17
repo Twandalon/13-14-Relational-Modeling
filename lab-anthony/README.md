@@ -23,3 +23,9 @@ Breweries have the following properties:
 { brewery: 'brewery', location: 'location', founded: 'founded', timestamp - automatically assigned id - automatically assigned }
 
 brewery and location are required to create a new brewery.
+
+Beers have the following properties:
+
+{ name: 'name', style: 'beer style', abv: 'abv', timestamp - automatically assigned id - automatically assigned }
+
+name and style are required to create a new beer.

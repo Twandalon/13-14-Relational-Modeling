@@ -16,9 +16,11 @@ const beerSchema = mongoose.Schema({
   },
 });
 
-beerSchema.pre('save',function(done){
+beerSchema.pre('save', function(done){
+  console.log('saving beer');
   return Brewery.findById(this.brewery)
     .then(breweryFound => {
+      console.log('breweryfound', breweryFound);
       if(!breweryFound)
         throw httpErrors(404, 'brewery not found');
 
@@ -29,7 +31,7 @@ beerSchema.pre('save',function(done){
     .catch(done);
 });
 
-beerSchema.post('remove',(document, done) => {
+beerSchema.post('remove', (document, done) => {
   return Brewery.findById(document.brewery)
     .then(breweryFound => {
       if(!breweryFound)

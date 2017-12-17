@@ -8,17 +8,18 @@ const beerMock = module.exports = {};
 
 beerMock.create = () => {
   let mock = {};
-
   return breweryMock.create()
     .then(brewery => {
       mock.brewery = brewery;
-
-      return new Beer({
+      let newBeer = {
         name: faker.lorem.words(3),
         style: faker.lorem.words(3),
         abv: faker.lorem.words(1),
-      }).save();
+        brewery: brewery._id,
+      };
+      return new Beer(newBeer).save();
     }).then(beer => {
+      console.log(beer);
       mock.beer = beer;
       return mock;
     });
